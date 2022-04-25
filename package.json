@@ -1,0 +1,8 @@
+{
+  "name": "arena-channel-search",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/absentees/arena-channel-search.git",
+  "author": "Scott B <djlethal109@gmail.com>",
+  "license": "MIT"
+}
