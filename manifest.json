@@ -1,6 +1,6 @@
 {
 	"name": "are.na channel search",
-	"description" : "To use, type '**' plus your channel name into the search bar.",
+	"description" : "To use, type 'arena' plus your channel name into the search bar.",
 	"version": "1.0",
 	"browser_specific_settings": {
 	  "gecko": {
@@ -10,9 +10,9 @@
 	"background": {
 	  "scripts": ["background.js"]
 	},
-	"omnibox": { "keyword" : "**" },
+	"omnibox": { "keyword" : "arena" },
 	"manifest_version": 2,
 	"permissions": [
-	  "https://are.na/"
+	  "activeTab"
 	]
   }

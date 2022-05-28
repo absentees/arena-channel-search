@@ -4,5 +4,14 @@
   "main": "index.js",
   "repository": "https://github.com/absentees/arena-channel-search.git",
   "author": "Scott B <djlethal109@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/jest": "^27.5.1",
+    "jest": "^28.1.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "web-ext build"
+  }
 }
