@@ -8,5 +8,14 @@
   "type": "module",
   "scripts": {
     "build": "web-ext build"
+  },
+  "webExt": {
+    "verbose": true,
+    "build": {
+      "overwriteDest": true
+    },
+    "ignoreFiles": [
+      "yarn.lock"
+    ]
   }
 }
