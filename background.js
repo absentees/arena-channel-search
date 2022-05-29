@@ -51,10 +51,13 @@ let searchChannels = (text, addSuggestions) => {
 browser.omnibox.onInputChanged.addListener(searchChannels);
 
 
-
 // Open the page based on how the user clicks on a suggestion.
 browser.omnibox.onInputEntered.addListener((text, disposition) => {
   let url = text;
+   if (!text.startsWith(SEARCH_URL)) {
+    // Update the URL if the user clicks on the default suggestion.
+    url = `https://are.na/search/${text}`;
+  }
   switch (disposition) {
     case "currentTab":
       browser.tabs.update({ url });
