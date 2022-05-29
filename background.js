@@ -2,8 +2,8 @@ const SEARCH_URL = `http://api.are.na/v2/search/channels`;
 
 // Provide help text to the user.
 browser.omnibox.setDefaultSuggestion({
-  description: `Search are.na channels
-    (e.g. "my first channel")`
+  description: `Search for are.na channels
+    (e.g. "arena influences")`,
 });
 
 let timeout = 0;
@@ -19,18 +19,17 @@ let searchChannels = (text, addSuggestions) => {
 
 
     let suggestions = [];
-    let suggestionsOnEmptyResults = [{
-      content: "https://are.na",
-      description: "No channels found"
-    }];
 
     fetch(request).then((response) => {
       response.json().then((json) => {
 
         console.log(json);
 
-        if (!json.length) {
-          addSuggestions(suggestionsOnEmptyResults);
+        if (json.length == 0) {
+          addSuggestions({
+            content: `https://are.na/search/${text}`,
+            description: `No results. Try searching on site for ${text}?`
+          });
         }
 
         json.channels.forEach((channel) => {

@@ -14,5 +14,8 @@
 	"manifest_version": 2,
 	"permissions": [
 	  "activeTab"
-	]
+	],	
+	"icons": {
+		"48": "icons/icon-arena-search.svg"
+	}
   }
