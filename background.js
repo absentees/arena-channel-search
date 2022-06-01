@@ -30,25 +30,24 @@ let searchChannels = (text, addSuggestions) => {
 
     }).then((json) => {
       console.log(json);
-      // json.then((json) => {
-        if (json.length == 0) {
-          addSuggestions({
-            content: `https://are.na/search/${text}`,
-            description: `No results. Try searching on site for ${text}?`
-          });
-        }
+      if (json.length == 0) {
+        addSuggestions({
+          content: `https://are.na/search/${text}`,
+          description: `No results. Try searching on site for ${text}?`
+        });
+      }
 
-        // Reset suggestions
-        suggestions = [];
+      // Reset suggestions
+      suggestions = [];
 
-        json.channels.forEach((channel) => {
-          suggestions.push({
-            content: `https://are.na/${channel.user.slug}/${channel.slug}`,
-            description: `${channel.title}`
-          })
+      json.channels.forEach((channel) => {
+        suggestions.push({
+          content: `https://are.na/${channel.user.slug}/${channel.slug}`,
+          description: `${channel.title}`
         })
+      })
 
-        addSuggestions(suggestions);
+      addSuggestions(suggestions);
 
       // })
     }).catch((error) => {
@@ -63,7 +62,7 @@ browser.omnibox.onInputChanged.addListener(searchChannels);
 // Open the page based on how the user clicks on a suggestion.
 browser.omnibox.onInputEntered.addListener((text, disposition) => {
   let url = text;
-   if (!text.startsWith("https://are.na/")) {
+  if (!text.startsWith("https://are.na/")) {
     // Update the URL if the user clicks on the default suggestion.
     url = `https://are.na/search/${text}`;
   }
