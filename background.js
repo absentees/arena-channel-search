@@ -13,8 +13,14 @@ let init = { method: 'GET', headers };
 let request = null;
 let suggestions = [];
 
+// TODO: Get user key 
+let color = browser.storage.local.get("color");
+color.then((res)=> console.log(res), (err) => {console.err(err)});
+
 
 let searchChannels = (text, addSuggestions) => {
+
+
   if (timeout) clearTimeout(timeout);
 
   timeout = setTimeout(() => {
