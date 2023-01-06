@@ -1,22 +1,28 @@
 const SEARCH_URL = `http://api.are.na/v2/search/channels`;
-
-// Provide help text to the user.
-browser.omnibox.setDefaultSuggestion({
-  description: `Search for are.na channels
-    (e.g. "arena influences")`,
-});
-
+let key = "";
 let timeout = 0;
 let searchDelay = 300;
-let headers = new Headers({ "Accept": "application/json" });
-let init = { method: 'GET', headers };
 let request = null;
 let suggestions = [];
 
-// TODO: Get user key 
-let color = browser.storage.local.get("color");
-color.then((res)=> console.log(res), (err) => {console.err(err)});
+// Provide help text to the user.
+browser.omnibox.setDefaultSuggestion({
+  description: `Search for are.na channels (e.g. "arena influences").`,
+});
 
+let initialise = () => {
+  // check if the settings is there
+  const savedKey = browser.storage.sync.get("key");
+  savedKey.then((item) => {
+    if (item.key) {
+      key = item.key;
+    } else {
+      console.error("no key found", item);
+    }
+  });
+}
+
+initialise();
 
 let searchChannels = (text, addSuggestions) => {
 
@@ -24,7 +30,13 @@ let searchChannels = (text, addSuggestions) => {
   if (timeout) clearTimeout(timeout);
 
   timeout = setTimeout(() => {
-    request = new Request(`${SEARCH_URL}?q=${text}`, init);
+    request = new Request(`${SEARCH_URL}?q=${text}`, {
+      method: 'GET',
+      headers: {
+        "Accept": "application/json",
+        "Authorization": `Bearer ${key}`
+      }
+    });
 
     fetch(request).then((response) => {
 
@@ -36,6 +48,7 @@ let searchChannels = (text, addSuggestions) => {
 
     }).then((json) => {
       console.log(json);
+
       if (json.length == 0) {
         addSuggestions({
           content: `https://are.na/search/${text}`,
@@ -68,19 +81,22 @@ browser.omnibox.onInputChanged.addListener(searchChannels);
 // Open the page based on how the user clicks on a suggestion.
 browser.omnibox.onInputEntered.addListener((text, disposition) => {
   let url = text;
+
   if (!text.startsWith("https://are.na/")) {
     // Update the URL if the user clicks on the default suggestion.
     url = `https://are.na/search/${text}`;
+  } else {
+    switch (disposition) {
+      case "currentTab":
+        browser.tabs.update({ url });
+        break;
+      case "newForegroundTab":
+        browser.tabs.create({ url });
+        break;
+      case "newBackgroundTab":
+        browser.tabs.create({ url, active: false });
+        break;
+    }
   }
-  switch (disposition) {
-    case "currentTab":
-      browser.tabs.update({ url });
-      break;
-    case "newForegroundTab":
-      browser.tabs.create({ url });
-      break;
-    case "newBackgroundTab":
-      browser.tabs.create({ url, active: false });
-      break;
-  }
+
 });
