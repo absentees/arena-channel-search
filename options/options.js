@@ -8,7 +8,7 @@ function saveOptions(e) {
 function restoreOptions() {
 
 	function setCurrentChoice(result) {
-		document.querySelector("#key").value = result.key || "123";
+		document.querySelector("#key").value = result.key || "";
 	}
 
 	function onError(error) {
