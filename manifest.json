@@ -1,7 +1,7 @@
 {
 	"name": "are.na channel search",
 	"description" : "To use, type 'arena' plus your channel name into the search bar.",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"background": {
 	  "scripts": ["background.js"]
 	},
