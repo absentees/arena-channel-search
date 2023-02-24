@@ -6,8 +6,6 @@ let timeout = null;
 let searchDelay = 500; // 500ms = 0.5s
 let request = null;
 let suggestions = [];
-const controller = new AbortController();
-const signal = controller.signal;
 
 // Provide help text to the user.
 browser.omnibox.setDefaultSuggestion({
@@ -50,11 +48,6 @@ let searchChannels = (text, addSuggestions) => {
   // Clear the timeout if it has already been set.
   if (timeout) clearTimeout(timeout);
 
-  // Check if the request is old and abort it if it is.
-  // if (request) {
-  //   controller.abort();
-  // }
-
   // Set the default suggestion to show in progress.
   browser.omnibox.setDefaultSuggestion({
     description: `Searching for ${text}...`
@@ -74,8 +67,7 @@ let searchChannels = (text, addSuggestions) => {
       headers: {
         "Accept": "application/json",
         "Authorization": `Bearer ${key}`
-      },
-      signal: signal
+      }
     });
 
     // Fetch the results and add the response to the omnibox.
@@ -115,15 +107,6 @@ let searchChannels = (text, addSuggestions) => {
 
       // Reset suggestions
       suggestions = [];
-
-      // Add a suggestion for each result.
-      // The content of the suggestion is the URL that will be opened
-      // json.channels.forEach((channel) => {
-      //   suggestions.push({
-      //     content: `https://are.na/${channel.user.slug}/${channel.slug}`,
-      //     description: `${channel.title}`
-      //   })
-      // })
 
       // Add up to six suggestions from the json channels result
       for (let i = 0; i < 6; i++) {
